@@ -5,11 +5,18 @@
 #
 class sssd::service {
 
-  service { $sssd::service_name:
+  service { $sssd::sssd_service_name:
     ensure     => running,
     enable     => true,
     hasstatus  => true,
     hasrestart => true,
+  }
+ 
+  if $::sssd::required_services {
+    service  { $::sssd::required_services:
+      ensure     => running,
+      enable     => true,
+    }
   }
 
 }

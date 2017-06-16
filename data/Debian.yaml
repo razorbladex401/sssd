@@ -8,3 +8,12 @@ sssd::required_packages:
     ensure: present
   libnss-sss:
     ensure: present
+sssd::mkhomedir_package_names:
+  - samba-common-bin
+  - libpam-modules
+  - libpam-sss
+  - sssd-tools
+  - libnss-sss
+  - samba
+sssd::krb_client_package_name: 'krb5-user'
+

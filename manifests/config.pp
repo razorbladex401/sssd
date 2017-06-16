@@ -16,7 +16,7 @@ class sssd::config {
 
   file {'sssd_config_file':
     ensure  => file,
-    path    => $sssd::config_file,
+    path    => $sssd::sssd_config_file,
     content => template('sssd/sssd.conf.erb'),
     owner   => 'root',
     group   => 'root',
