@@ -19,11 +19,18 @@ describe 'sssd' do
           when 'Debian'
             it { should contain_package('libpam-runtime').with_ensure('present') }
             it { should contain_package('libpam-sss').with_ensure('present') }
+            it { should contain_package('samba-common-bin').with_ensure('present') }
+            it { should contain_package('libpam-modules').with_ensure('present') }
+            it { should contain_package('sssd-tools').with_ensure('present') }
             it { should contain_package('libnss-sss').with_ensure('present') }
+            it { should contain_package('samba').with_ensure('present') }
+            it { should contain_package('krb5-user').with_ensure('present') }
           when 'RedHat'
             if facts[:os]['release']['major'] =~ /(6|7)/
               it { should contain_package('authconfig').with_ensure('present') }
+              it { should contain_package('oddjob').with_ensure('present') }
               it { should contain_package('oddjob-mkhomedir').with_ensure('present') }
+              it { should contain_package('krb5-workstation').with_ensure('present') }
             else
               it { should contain_package('authconfig').with_ensure('latest') }
             end
