@@ -12,7 +12,6 @@ class sssd (
   String $sssd_package_name,
   String $sssd_package_ensure,
   String $sssd_service_name,
-  Boolean $manage_sssd_config,
   Variant[Enum['running','stopped'], Boolean] $sssd_service_ensure,
   Stdlib::Absolutepath $sssd_config_file,
   Hash $sssd_config,

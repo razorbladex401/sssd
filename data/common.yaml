@@ -4,7 +4,6 @@ sssd::sssd_package_ensure: 'present'
 sssd::cache_path: '/var/lib/sss/db/*'
 sssd::sssd_service_name: 'sssd'
 sssd::sssd_service_ensure: 'running'
-sssd::manage_sssd_config: true
 sssd::sssd_config_file: '/etc/sssd/sssd.conf'
 sssd::sssd_config:
   'sssd':
