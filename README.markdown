@@ -107,6 +107,8 @@ Install SSSD with custom configuration:
 * `krb_config_file`:Stdlib::Absolutepath.  Path to kerberos configuration file.
 * `krb_config`: Hash.   A hash of configuration options structured like the Kerberos configuration file. 
 * `manage_krb_config`: Boolean. Whether or not to manage the kerberos configuration.
+* `manage_oddjobd`: Boolean. Whether or not to manage the oddjobd service.
+* `oddjobd_service_ensure`: Variant[Enum['running','stopped'], Boolean]. Ensure value to set for the oddjobd service, if manage_oddjobd is true.
 
 For example:
 

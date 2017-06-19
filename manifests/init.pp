@@ -33,6 +33,8 @@ class sssd (
   Stdlib::Absolutepath $krb_config_file,
   Hash $krb_config,
   Boolean $manage_krb_config,
+  Boolean $manage_oddjobd,
+  Variant[Enum['running','stopped'], Boolean] $oddjobd_service_ensure,
 
 ) {
 

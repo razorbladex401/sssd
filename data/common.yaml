@@ -25,3 +25,7 @@ sssd::krb_config:
     default: 'FILE:/var/log/krb5libs.log'
 sssd::manage_krb_config: true
 sssd::domain: "%{::domain}"
+
+sssd::manage_oddjobd: false
+sssd::oddjobd_service_ensure: false
+
