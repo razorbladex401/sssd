@@ -36,14 +36,13 @@ class sssd (
 
 ) {
 
-    contain '::sssd::install'
-    contain '::sssd::config'
-    contain '::sssd::join'
-    contain '::sssd::service'
+  contain '::sssd::install'
+  contain '::sssd::config'
+  contain '::sssd::join'
+  contain '::sssd::service'
 
   Class['::sssd::install']
   -> Class['::sssd::config']
   ~> Class['::sssd::join']
-  -> Class['::sssd::service']
-  -> Class['::sssd']
+  ~> Class['::sssd::service']
 }
