@@ -41,7 +41,7 @@ class sssd::join::keytab {
 
   exec { 'adcli_join_with_keytab':
     path    => '/usr/bin:/usr/sbin:/bin',
-    command => "adcli join ${_domain}",
+    command => "adcli join --login-ccache ${_domain}",
     unless  => "klist -k /etc/krb5.keytab | grep -i '${::hostname[0,15]}@${_domain}'",
     require => Exec['run_kinit_with_keytab'],
   }

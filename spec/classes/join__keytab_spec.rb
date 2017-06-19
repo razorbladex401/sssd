@@ -51,7 +51,7 @@ describe 'sssd' do
           it do
             is_expected.to contain_exec('adcli_join_with_keytab').with({
               'path'    => '/usr/bin:/usr/sbin:/bin',
-              'command' => 'adcli join example.com',
+              'command' => 'adcli join --login-ccache example.com',
               'unless'  => "klist -k /etc/krb5.keytab | grep -i 'foo@example.com'",
             })
           end

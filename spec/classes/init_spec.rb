@@ -14,7 +14,8 @@ describe 'sssd' do
           it { should compile.with_all_deps }
           it { should contain_class('sssd::install').that_comes_before('Class[sssd::config]') }
           it { should contain_class('sssd::config') }
-          it { should contain_class('sssd::service').that_subscribes_to('Class[sssd::config]') }
+          it { should contain_class('sssd::join').that_subscribes_to('Class[sssd::config]') }
+          it { should contain_class('sssd::service').that_subscribes_to('Class[sssd::join]') }
         end
       end
     end
