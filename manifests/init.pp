@@ -34,14 +34,17 @@ class sssd (
   Hash $krb_config,
   Boolean $manage_krb_config,
 
-
 ) {
 
-  class { '::sssd::install': }
-  -> class { '::sssd::config': }
-  ~> class { '::sssd::join': }
-  -> class { '::sssd::service': }
-  -> Class['::sssd']
+    contain '::sssd::install'
+    contain '::sssd::config'
+    contain '::sssd::join'
+    contain '::sssd::service'
 
+  Class['::sssd::install']
+  -> Class['::sssd::config']
+  ~> Class['::sssd::join']
+  -> Class['::sssd::service']
+  -> Class['::sssd']
   Class['::sssd::config'] ~> Class['::sssd::service']
 }
