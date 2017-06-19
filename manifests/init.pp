@@ -46,5 +46,4 @@ class sssd (
   ~> Class['::sssd::join']
   -> Class['::sssd::service']
   -> Class['::sssd']
-  Class['::sssd::config'] ~> Class['::sssd::service']
 }
