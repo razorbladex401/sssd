@@ -76,12 +76,7 @@ describe 'sssd' do
               'unless'  => "id known_user > /dev/null 2>&1",
             })
           end
-
-
-
-
         end
-
 
         context "sssd::join::keytab class with custom krb_config" do
           let(:params) do
