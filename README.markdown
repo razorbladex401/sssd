@@ -109,6 +109,7 @@ Install SSSD with custom configuration:
 * `manage_krb_config`: Boolean. Whether or not to manage the kerberos configuration.
 * `manage_oddjobd`: Boolean. Whether or not to manage the oddjobd service.
 * `oddjobd_service_ensure`: Variant[Enum['running','stopped'], Boolean]. Ensure value to set for the oddjobd service, if manage_oddjobd is true.
+* `domain_test_user`: Variant[String, Undef].  User account to check to validate that the join was successful.
 
 For example:
 

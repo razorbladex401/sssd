@@ -6,11 +6,13 @@
 class sssd::join::keytab {
 
   $_domain            = $::sssd::domain
+  $_upcase_domain     = upcase($::sssd::domain)
   $_domain_join_user  = $::sssd::domain_join_user
   $_krb_keytab        = $::sssd::krb_keytab
   $_krb_config_file   = $::sssd::krb_config_file
   $_krb_config        = $::sssd::krb_config
   $_manage_krb_config = $::sssd::manage_krb_config
+  $_domain_test_user  = $sssd::domain_test_user
 
   file { 'krb_keytab':
     path   => $_krb_keytab,
@@ -39,12 +41,20 @@ class sssd::join::keytab {
     before      => Exec['adcli_join_with_keytab'],
   }
 
-  exec { 'adcli_join_with_keytab':
-    path    => '/usr/bin:/usr/sbin:/bin',
-    command => "adcli join --login-ccache ${_domain}",
-    unless  => "klist -k /etc/krb5.keytab | grep -i '${::hostname[0,15]}@${_domain}'",
-    require => Exec['run_kinit_with_keytab'],
+  if $_domain_test_user {
+    exec { 'adcli_join_with_keytab':
+      path    => '/usr/bin:/usr/sbin:/bin',
+      command => "adcli join --login-ccache -v ${_upcase_domain} | tee /tmp/adcli-join-${_upcase_domain}.log",
+      unless  => "id ${_domain_test_user} > /dev/null 2>&1",
+      require => Exec['run_kinit_with_keytab'],
+    }
+  } else { 
+    exec { 'adcli_join_with_keytab':
+      path    => '/usr/bin:/usr/sbin:/bin',
+      command => "adcli join --login-ccache -v ${_upcase_domain} | tee /tmp/adcli-join-${_upcase_domain}.log",
+      unless  => "klist -k /etc/krb5.keytab | grep -i '${::hostname[0,15]}@${_domain}'",
+      require => Exec['run_kinit_with_keytab'],
+    }
   }
-
 }
 
