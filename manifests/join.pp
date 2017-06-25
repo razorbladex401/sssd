@@ -4,12 +4,21 @@
 #
 class sssd::join {
 
-  if $::sssd::krb_ticket_join {
-    contain '::sssd::join::keytab'
+  case $::sssd::join_type {
+    /^keytab$/: {
+      contain '::sssd::join::keytab'
+    } 
+    /^password$/: {
+      contain '::sssd::join::password'
+    }
+    /^noauth$/: {
+    contain '::sssd::join::noauth'
+    }
+    /^none$/: {
+    }
+    default: {
+      fail("Invalid join_type: ${::sssd::join_type}.")
+    }
   }
-  else {
-    contain '::sssd::join::password'
-  }
-
 }
 

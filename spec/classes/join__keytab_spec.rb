@@ -11,7 +11,7 @@ describe 'sssd' do
         context "sssd::join::keytab class with default krb_config" do
           let(:params) do
             {
-              :krb_ticket_join       => true,
+              :join_type             =>'keytab',
               :domain_join_user      => 'user',
               :krb_keytab            => '/tmp/join.keytab',
               :krb_config_file       => '/etc/krb5.conf',
@@ -51,28 +51,30 @@ describe 'sssd' do
           it do
             is_expected.to contain_exec('adcli_join_with_keytab').with({
               'path'    => '/usr/bin:/usr/sbin:/bin',
-              'command' => 'adcli join --login-ccache -v EXAMPLE.COM | tee /tmp/adcli-join-EXAMPLE.COM.log',
+              'command' => 'adcli join --login-ccache -v --show-details EXAMPLE.COM | tee /tmp/adcli-join-EXAMPLE.COM.log',
               'unless'  => "klist -k /etc/krb5.keytab | grep -i 'foo@example.com'",
             })
           end
         end
 
-        context "sssd::join::keytab class with default krb_config and a domain test user" do
+        context "sssd::join::keytab class with default krb_config and a test user and a domain controller specified" do
           let(:params) do
             {
-              :krb_ticket_join       => true,
+              :join_type             =>'keytab',
               :domain_join_user      => 'user',
               :krb_keytab            => '/tmp/join.keytab',
               :krb_config_file       => '/etc/krb5.conf',
               :domain                => 'example.com',
               :manage_krb_config     => true,
               :domain_test_user      => 'known_user',
+              :domain_controller     => 'dc01.example.com',
             }
           end
+
           it do
             is_expected.to contain_exec('adcli_join_with_keytab').with({
               'path'    => '/usr/bin:/usr/sbin:/bin',
-              'command' => 'adcli join --login-ccache -v EXAMPLE.COM | tee /tmp/adcli-join-EXAMPLE.COM.log',
+              'command' => 'adcli join --login-ccache -v --show-details -S dc01.example.com EXAMPLE.COM | tee /tmp/adcli-join-EXAMPLE.COM.log',
               'unless'  => "id known_user > /dev/null 2>&1",
             })
           end
@@ -81,7 +83,7 @@ describe 'sssd' do
         context "sssd::join::keytab class with custom krb_config" do
           let(:params) do
             {
-              :krb_ticket_join   => true,
+              :join_type         =>'keytab',
               :domain_join_user  => 'user',
               :krb_keytab        => '/tmp/join.keytab',
               :krb_config_file   => '/etc/krb5.conf',

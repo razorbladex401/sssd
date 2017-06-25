@@ -28,7 +28,8 @@ class sssd (
   String $domain,
   Variant[String, Undef] $domain_join_user = undef,
   Variant[String, Undef] $domain_join_password = undef,
-  Boolean $krb_ticket_join,
+  Variant[String, Undef] $domain_controller = undef,
+  Enum['password', 'keytab', 'noauth', 'none'] $join_type,
   Variant[Stdlib::Absolutepath, Undef] $krb_keytab = undef,
   Stdlib::Absolutepath $krb_config_file,
   Hash $krb_config,
@@ -36,6 +37,7 @@ class sssd (
   Boolean $manage_oddjobd,
   Variant[Enum['running','stopped'], Boolean] $oddjobd_service_ensure,
   Variant[String, Undef] $domain_test_user = undef,
+  Variant[Array, Undef] $extra_args = undef,
 
 ) {
 

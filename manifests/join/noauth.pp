@@ -1,16 +1,16 @@
-# == Class sssd::join::password
+# == Class sssd::join::noauth
 #
-# This class is called from sssd for
-# joining AD using a username and password.
+# This class is called from sssd for performing
+# an adjoin with no authentication offered.  
+# Useful for pre-joined dmz servers.
 #
-class sssd::join::password {
+class sssd::join::noauth {
 
   $_domain            = $::sssd::domain
   $_upcase_domain     = upcase($::sssd::domain)
-  $_user              = $::sssd::domain_join_user
-  $_password          = $::sssd::domain_join_password
+  $_domain_join_user  = $::sssd::domain_join_user
+  $_domain_controller = $::sssd::domain_controller
   $_domain_test_user  = $sssd::domain_test_user
-  $_domain_controller = $sssd::domain_controller
   $_extra_args        = $sssd::extra_args
 
   $_server_opt = $_domain_controller ? {
@@ -19,10 +19,8 @@ class sssd::join::password {
   }
 
   $_opts = [
-    '--stdin-password',
     '-v',
     '--show-details',
-    "--login-user ${_user}",
     $_server_opt,
   ]
 
@@ -31,17 +29,17 @@ class sssd::join::password {
 
 
   if $_domain_test_user {
-    exec { 'adcli_join_with_password':
+    exec { 'adcli_join_with_noauth':
       path    => '/usr/bin:/usr/sbin:/bin',
-      command => "echo '${_password}' | adcli join ${_options} ${_upcase_domain} | tee /tmp/adcli-join-${_upcase_domain}.log",
+      command => "adcli join ${_options} ${_upcase_domain} | tee /tmp/adcli-join-${_upcase_domain}.log",
       unless  => "id ${_domain_test_user} > /dev/null 2>&1",
     }
   } else {
-    exec { 'adcli_join_with_password':
+    exec { 'adcli_join_with_noauth':
       path    => '/usr/bin:/usr/sbin:/bin',
-      command => "echo '${_password}' | adcli join ${_options} ${_upcase_domain} | tee /tmp/adcli-join-${_upcase_domain}.log",
+      command => "adcli join ${_options} ${_upcase_domain} | tee /tmp/adcli-join-${_upcase_domain}.log",
       unless  => "klist -k /etc/krb5.keytab | grep -i '${::hostname[0,15]}@${_domain}'",
+      require => Exec['run_kinit_with_keytab'],
     }
   }
 }
-

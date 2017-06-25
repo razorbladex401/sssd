@@ -103,6 +103,7 @@ Install SSSD with custom configuration:
 * `domain`: String.  Name of AD Domain to join.
 * `domain_join_user`: String. Name of user to use to join the domain.
 * `domain_join_password`: String.  Name of password for the `domain_join_user`.  Only needed if `krb_ticket_join` is false.
+* `domain_controller`: String.  Optional argument to specify the domain controller to use when joining.
 * `krb_keytab`: Stdlib::Absolutepath.  Path to keytab file with permission to join the domain.  Only needed if `krb_ticket_join` is true.
 * `krb_config_file`:Stdlib::Absolutepath.  Path to kerberos configuration file.
 * `krb_config`: Hash.   A hash of configuration options structured like the Kerberos configuration file. 
@@ -110,6 +111,9 @@ Install SSSD with custom configuration:
 * `manage_oddjobd`: Boolean. Whether or not to manage the oddjobd service.
 * `oddjobd_service_ensure`: Variant[Enum['running','stopped'], Boolean]. Ensure value to set for the oddjobd service, if manage_oddjobd is true.
 * `domain_test_user`: Variant[String, Undef].  User account to check to validate that the join was successful.
+* `join_type`: Enum['password', 'keytab', 'noauth', 'none'].  Method for joining. If none, no join will be run.  Noauth is useful for prejoined systems.
+* `extra_args`: Variant[Array, Undef]. An array of arguments that will be passed to adcli when joining.
+
 
 For example:
 
