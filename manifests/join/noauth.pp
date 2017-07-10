@@ -39,7 +39,6 @@ class sssd::join::noauth {
       path    => '/usr/bin:/usr/sbin:/bin',
       command => "adcli join ${_options} ${_upcase_domain} | tee /tmp/adcli-join-${_upcase_domain}.log",
       unless  => "klist -k /etc/krb5.keytab | grep -i '${::hostname[0,15]}@${_domain}'",
-      require => Exec['run_kinit_with_keytab'],
     }
   }
 }

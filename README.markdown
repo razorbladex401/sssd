@@ -102,9 +102,9 @@ Install SSSD with custom configuration:
 * `mkhomedir_package_names`: Array.  Names of packages required to enable homedirectory creation.
 * `domain`: String.  Name of AD Domain to join.
 * `domain_join_user`: String. Name of user to use to join the domain.
-* `domain_join_password`: String.  Name of password for the `domain_join_user`.  Only needed if `krb_ticket_join` is false.
+* `domain_join_password`: String.  Name of password for the `domain_join_user`.
 * `domain_controller`: String.  Optional argument to specify the domain controller to use when joining.
-* `krb_keytab`: Stdlib::Absolutepath.  Path to keytab file with permission to join the domain.  Only needed if `krb_ticket_join` is true.
+* `krb_keytab`: Stdlib::Absolutepath.  Path to keytab file with permission to join the domain.
 * `krb_config_file`:Stdlib::Absolutepath.  Path to kerberos configuration file.
 * `krb_config`: Hash.   A hash of configuration options structured like the Kerberos configuration file. 
 * `manage_krb_config`: Boolean. Whether or not to manage the kerberos configuration.
