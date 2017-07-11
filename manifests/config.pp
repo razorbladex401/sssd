@@ -6,6 +6,7 @@ class sssd::config {
 
   $_manage_krb_config = $::sssd::manage_krb_config
   $_krb_config_file   = $::sssd::krb_config_file
+  $_krb_config        = $::sssd::krb_config
 
   $cache_flush_test = "test $(find ${sssd::cache_path} -size +2999M | wc -l) -gt 0"
 
