@@ -13,9 +13,12 @@ class sssd::join::noauth {
   $_domain_test_user  = $sssd::domain_test_user
   $_extra_args        = $sssd::extra_args
 
-  $_server_opt = $_domain_controller ? {
-    undef   => '',
-    default => "-S ${_domain_controller}",
+
+
+  if $_domain_controller {
+    $_server_opt = "-S ${_domain_controller}"
+  } else {
+    $_server_opt = '' 
   }
 
   $_opts = [
