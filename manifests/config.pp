@@ -4,6 +4,9 @@
 #
 class sssd::config {
 
+  $_manage_krb_config = $::sssd::manage_krb_config
+  $_krb_config_file   = $::sssd::krb_config_file
+
   $cache_flush_test = "test $(find ${sssd::cache_path} -size +2999M | wc -l) -gt 0"
 
   if $sssd::clear_cache {
@@ -12,6 +15,18 @@ class sssd::config {
     }
   } else {
     $config_params = {}
+  }
+
+
+  if $_manage_krb_config {
+    file { 'krb_configuration':
+      ensure  => file,
+      path    => $_krb_config_file,
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0644',
+      content => template('sssd/krb5.conf.erb'),
+    }
   }
 
   file {'sssd_config_file':

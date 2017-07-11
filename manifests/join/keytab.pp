@@ -10,9 +10,6 @@ class sssd::join::keytab {
   $_domain_join_user  = $::sssd::domain_join_user
   $_domain_controller = $::sssd::domain_controller
   $_krb_keytab        = $::sssd::krb_keytab
-  $_krb_config_file   = $::sssd::krb_config_file
-  $_krb_config        = $::sssd::krb_config
-  $_manage_krb_config = $::sssd::manage_krb_config
   $_domain_test_user  = $sssd::domain_test_user
   $_extra_args        = $sssd::extra_args
 
@@ -38,18 +35,6 @@ class sssd::join::keytab {
     group  => 'root',
     mode   => '0400',
     notify => Exec['run_kinit_with_keytab'],
-  }
-
-  if $_manage_krb_config {
-    file { 'krb_configuration':
-      ensure  => file,
-      path    => $_krb_config_file,
-      owner   => 'root',
-      group   => 'root',
-      mode    => '0644',
-      content => template('sssd/krb5.conf.erb'),
-      notify  => Exec['run_kinit_with_keytab'],
-    }
   }
 
   exec { 'run_kinit_with_keytab':
