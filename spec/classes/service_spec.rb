@@ -19,7 +19,7 @@ describe 'sssd' do
           when 'RedHat'
             if facts[:os]['release']['major'] =~ /(6|7)/
               it { should contain_service('oddjobd').with_ensure('running') }
-              it { should contain_service('messagebus').with_before('Service[oddjobd]') }
+              it { should contain_service('messagebus').with_before('Service[sssd]') }
             end
           end
 

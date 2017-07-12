@@ -31,7 +31,6 @@ class sssd::service {
       {
         ensure  => running,
         enable  => true,
-        require => $_requiredsvc,
         before  => Service[$sssd::sssd_service_name],
       }
     )
