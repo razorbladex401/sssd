@@ -13,6 +13,7 @@ class sssd::service {
         hasstatus  => true,
         hasrestart => true,
         before     => Service[$sssd::sssd_service_name],
+        require    => Service[messagebus],
       }
     )
   }

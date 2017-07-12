@@ -8,7 +8,8 @@ sssd::required_packages:
     ensure: present
 
 sssd::required_services:
-  - 'messagebus'
+  - messagebus
 
 sssd::manage_oddjobd: true
 sssd::oddjobd_service_ensure: 'running'
+
