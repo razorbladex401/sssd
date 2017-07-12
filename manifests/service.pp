@@ -6,17 +6,15 @@
 class sssd::service {
 
   if $sssd::manage_oddjobd == true {
-    $before = 'Service[oddjobd]'
     ensure_resource('service', 'oddjobd',
       {
         ensure     => $sssd::oddjobd_service_ensure,
         enable     => true,
         hasstatus  => true,
         hasrestart => true,
+        before     => Service[$sssd::sssd_service_name],
       }
     )
-  } else {
-    $before = undef
   }
 
   ensure_resource('service', $sssd::sssd_service_name,
@@ -25,16 +23,16 @@ class sssd::service {
       enable     => true,
       hasstatus  => true,
       hasrestart => true,
-      before     => $before,
     }
   )
  
   if ! empty($sssd::required_services) {
     ensure_resource('service', $sssd::required_services,
       {
-        ensure     => running,
-        enable     => true,
-        before     => $before,
+        ensure  => running,
+        enable  => true,
+        require => $_requiredsvc,
+        before  => Service[$sssd::sssd_service_name],
       }
     )
   }
