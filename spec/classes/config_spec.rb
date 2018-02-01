@@ -8,7 +8,7 @@ describe 'sssd' do
           facts
         end
 
-        context "sssd::config class with default parameters on #{os}" do
+        context "sssd::sssd_config class with default parameters on #{os}" do
           let(:params) {{ }}
 
           it do
@@ -53,7 +53,7 @@ describe 'sssd' do
         describe "sssd class with some custom parameters on #{os}" do
           let(:params) do
             {
-               :config      => {
+               :sssd_config      => {
                  'domain/AD'   => { 'ldap_force_upper_case_realm' => false, },
                  'domain/LDAP' => { 'cache_credentials' => false, },
                  'sssd'        => { 'domains' => ['AD','LDAP'], },

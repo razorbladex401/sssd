@@ -4,3 +4,7 @@ sssd::pam_mkhomedir_file_path: ~
 sssd::required_packages:
   authconfig:
     ensure: present
+sssd::mkhomedir_package_names:
+  - oddjob
+  - oddjob-mkhomedir
+sssd::krb_client_package_name: 'krb5-workstation'

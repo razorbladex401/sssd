@@ -1,11 +1,11 @@
 ---
-sssd::package_name: 'sssd'
-sssd::package_ensure: 'present'
+sssd::sssd_package_name: 'sssd'
+sssd::sssd_package_ensure: 'present'
 sssd::cache_path: '/var/lib/sss/db/*'
-sssd::service_name: 'sssd'
-sssd::service_ensure: 'running'
-sssd::config_file: '/etc/sssd/sssd.conf'
-sssd::config:
+sssd::sssd_service_name: 'sssd'
+sssd::sssd_service_ensure: 'running'
+sssd::sssd_config_file: '/etc/sssd/sssd.conf'
+sssd::sssd_config:
   'sssd':
     config_file_version: 2
     services: 'nss,pam'
@@ -17,3 +17,14 @@ sssd::config:
       cache_credentials: true
 sssd::mkhomedir: true
 sssd::clear_cache: false
+sssd::adcli_package_name: 'adcli'
+sssd::krb_ticket_join: false
+sssd::krb_config_file: '/etc/krb5.conf'
+sssd::krb_config:
+  'logging':
+    default: 'FILE:/var/log/krb5libs.log'
+sssd::manage_krb_config: true
+sssd::domain: "%{::domain}"
+sssd::manage_oddjobd: false
+sssd::oddjobd_service_ensure: false
+sssd::join_type: 'none'

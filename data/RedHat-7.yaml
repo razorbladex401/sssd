@@ -4,3 +4,10 @@ sssd::required_packages:
     ensure: present
   oddjob-mkhomedir:
     ensure: present
+
+sssd::required_services:
+  - messagebus
+
+sssd::manage_oddjobd: true
+sssd::oddjobd_service_ensure: 'running'
+
