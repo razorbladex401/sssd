@@ -38,26 +38,21 @@ class sssd::join::keytab {
   }
 
   exec { 'run_kinit_with_keytab':
-    path        => '/usr/bin:/usr/sbin:/bin',
-    command     => "kinit -kt ${_krb_keytab} ${_domain_join_user}",
-    refreshonly => true,
-    before      => Exec['adcli_join_with_keytab'],
+    path      => '/usr/bin:/usr/sbin:/bin',
+    command   => "kinit -kt ${_krb_keytab} ${_domain_join_user}",
+    logoutput => true,
+    unless    => "klist -k | grep $(kvno `hostname -s` | awk '{print \$4}')",
+    before    => Exec['adcli_join_with_keytab'],
   }
 
-  if $_domain_test_user {
-    exec { 'adcli_join_with_keytab':
-      path    => '/usr/bin:/usr/sbin:/bin',
-      command => "adcli join ${_options} ${_upcase_domain} | tee /tmp/adcli-join-${_upcase_domain}.log",
-      unless  => "id ${_domain_test_user} > /dev/null 2>&1",
-      require => Exec['run_kinit_with_keytab'],
-    }
-  } else { 
-    exec { 'adcli_join_with_keytab':
-      path    => '/usr/bin:/usr/sbin:/bin',
-      command => "adcli join ${_options} ${_upcase_domain} | tee /tmp/adcli-join-${_upcase_domain}.log",
-      unless  => "klist -k /etc/krb5.keytab | grep -i '${::hostname[0,15]}@${_domain}'",
-      require => Exec['run_kinit_with_keytab'],
-    }
+  exec { 'adcli_join_with_keytab':
+    path      => '/usr/bin:/usr/sbin:/bin',
+    command   => "adcli join ${_options} ${_upcase_domain}",
+    logoutput => true,
+    tries     => '3',
+    try_sleep => '10',
+    unless    => "klist -k | grep $(kvno `hostname -s` | awk '{print \$4}')",
+    require   => Exec['run_kinit_with_keytab'],
   }
 }
 

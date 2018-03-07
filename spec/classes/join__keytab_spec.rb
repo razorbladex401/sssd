@@ -42,22 +42,26 @@ describe 'sssd' do
 
           it do
             is_expected.to contain_exec('run_kinit_with_keytab').with({
-              'path'        => '/usr/bin:/usr/sbin:/bin',
-              'command'     => 'kinit -kt /tmp/join.keytab user',
-              'refreshonly' => 'true',
+              'path'      => '/usr/bin:/usr/sbin:/bin',
+              'command'   => 'kinit -kt /tmp/join.keytab user',
+              'logoutput' => 'true',
+              'unless'    => "klist -k | grep $(kvno `hostname -s` | awk '{print $4}')",
             }).that_comes_before('Exec[adcli_join_with_keytab]')
           end
 
           it do
             is_expected.to contain_exec('adcli_join_with_keytab').with({
-              'path'    => '/usr/bin:/usr/sbin:/bin',
-              'command' => 'adcli join --login-ccache -v --show-details EXAMPLE.COM | tee /tmp/adcli-join-EXAMPLE.COM.log',
-              'unless'  => "klist -k /etc/krb5.keytab | grep -i 'foo@example.com'",
+              'path'      => '/usr/bin:/usr/sbin:/bin',
+              'command'   => 'adcli join --login-ccache -v --show-details EXAMPLE.COM',
+              'logoutput' => 'true',
+              'tries'     => '3',
+              'try_sleep' => '10',
+              'unless'    => "klist -k | grep $(kvno `hostname -s` | awk '{print $4}')",
             })
           end
         end
 
-        context "sssd::join::keytab class with default krb_config and a test user and a domain controller specified" do
+        context "sssd::join::keytab class with default krb_config and a domain controller specified" do
           let(:params) do
             {
               :join_type             =>'keytab',
@@ -66,7 +70,6 @@ describe 'sssd' do
               :krb_config_file       => '/etc/krb5.conf',
               :domain                => 'example.com',
               :manage_krb_config     => true,
-              :domain_test_user      => 'known_user',
               :domain_controller     => 'dc01.example.com',
             }
           end
@@ -74,8 +77,11 @@ describe 'sssd' do
           it do
             is_expected.to contain_exec('adcli_join_with_keytab').with({
               'path'    => '/usr/bin:/usr/sbin:/bin',
-              'command' => 'adcli join --login-ccache -v --show-details -S dc01.example.com EXAMPLE.COM | tee /tmp/adcli-join-EXAMPLE.COM.log',
-              'unless'  => "id known_user > /dev/null 2>&1",
+              'command' => 'adcli join --login-ccache -v --show-details -S dc01.example.com EXAMPLE.COM',
+              'logoutput' => 'true',
+              'tries'     => '3',
+              'try_sleep' => '10',
+              'unless'    => "klist -k | grep $(kvno `hostname -s` | awk '{print $4}')",
             })
           end
         end
