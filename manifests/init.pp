@@ -36,7 +36,6 @@ class sssd (
   Boolean $manage_krb_config,
   Boolean $manage_oddjobd,
   Variant[Enum['running','stopped'], Boolean] $oddjobd_service_ensure,
-  Variant[String, Undef] $domain_test_user = undef,
   Variant[Array, Undef] $extra_args = undef,
 
 ) {

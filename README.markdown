@@ -110,7 +110,6 @@ Install SSSD with custom configuration:
 * `manage_krb_config`: Boolean. Whether or not to manage the kerberos configuration.
 * `manage_oddjobd`: Boolean. Whether or not to manage the oddjobd service.
 * `oddjobd_service_ensure`: Variant[Enum['running','stopped'], Boolean]. Ensure value to set for the oddjobd service, if manage_oddjobd is true.
-* `domain_test_user`: Variant[String, Undef].  User account to check to validate that the join was successful.
 * `join_type`: Enum['password', 'keytab', 'noauth', 'none'].  Method for joining. If none, no join will be run.  Noauth is useful for prejoined systems.
 * `extra_args`: Variant[Array, Undef]. An array of arguments that will be passed to adcli when joining.
 
