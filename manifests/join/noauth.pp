@@ -36,6 +36,6 @@ class sssd::join::noauth {
     logoutput => true,
     tries     => '3',
     try_sleep => '10',
-    unless    => "klist -k | grep $(kvno `hostname -s` | awk '{print \$4}')",
+    unless    => "klist -k /etc/krb5.keytab | grep -i '${::hostname[0,15]}@${_domain}'",
   }
 }
