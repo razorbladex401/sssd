@@ -7,6 +7,7 @@ sssd::required_packages:
 
 sssd::required_services:
   - messagebus
+  - systemd-logind
 
 sssd::manage_oddjobd: true
 sssd::oddjobd_service_ensure: 'running'
